@@ -31,7 +31,7 @@ PAYLOAD = Json string.
 class HotSanClient:
     def __init__(self, access_token = "", secret_key= "", url= "", payload=None,
                  encoded_payload=None, signature= None):
-        """For public Requesrs, access tokens and secret keys are not required
+        """For public Requests, access tokens and secret keys are not required
         encoded payload and signature can ba added by get_encoded_payload() method
         and get_signature() method, which is only necessary for private requests"""
         self.access_token = access_token

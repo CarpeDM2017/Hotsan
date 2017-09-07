@@ -18,3 +18,6 @@ def json_to_file(json_object, filename="Dataset", filepath_dir = "", add_timesta
     fd = open(filepath_result, 'w')
     fd.write(json.dumps(parsed, indent=4))
     fd.close()
+
+def csv_backfill(filepath):
+    pass #todo : need to create function to backfill json format data into csv format

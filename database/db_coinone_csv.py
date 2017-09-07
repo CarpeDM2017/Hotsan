@@ -11,8 +11,8 @@ import os
 # Setting Filename : Filepath & timestamp
 filedir = "\Users\User\Desktop\Coinprice DB"
 current_time = datetime.now()
-file_timestamp = current_time.strftime('%Y%m%d%H')
-filepath_full = os.path.join(filedir, "Coinone" + "_" + file_timestamp + ".csv")
+file_timestamp = current_time.strftime('%Y%m%d%H%M%S')
+filepath_full = os.path.join(filedir, "Coinone_" + file_timestamp + ".csv")
 
 # Specify Which transaction records to fetch as dict format.
 payload_dict_daily = {"currency": ["btc", "bch", "eth", "xrp", "etc", "qtum"], "period": ["day"]}

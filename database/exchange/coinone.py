@@ -105,3 +105,37 @@ def json_to_df(json_string):
     coinone_df = coinone_df[["timestamp", "exchange", "coin", "price", "currency", "volume", "req_timestamp"]]
 
     return coinone_df
+
+def csv_dedupe():
+    #todo : merge csv files into daily tables, without duplication
+    """
+    1.read csv file into dataframe
+    2.leave data within specified date
+    3.from daily transaction log, trim certain time
+    4.from hourly transaction log, trim certain time
+    5.merge both files
+    6.save as csv
+    """
+    # df_tmp = pd.read_csv(filepath)
+    # maxval = df_tmp["timestamp"].max()
+    pass
+
+def csv_backfill(filepath):
+    # todo : to be deprecated
+    # Open json file
+    json_dict = json.load(filepath)
+    # Read Main Content of JSON string, and Cast data type to numeric values.(Original type : string)
+    content_list = json_dict["completeOrders"]
+    coinone_df = pd.DataFrame(content_list).apply(pd.to_numeric)
+
+    # Add Coin Type, Currency, exchange, timestamp of request. Rename QTY
+    coinone_df["coin"] = json_dict["currency"]
+    coinone_df["req_timestamp"] = json_dict["timestamp"]
+    coinone_df["currency"] = "KRW"
+    coinone_df["exchange"] = "coinone"
+    coinone_df.rename(columns = {'qty':'volume'}, inplace = True)
+
+    # Order columns
+    coinone_df = coinone_df[["timestamp", "exchange", "coin", "price", "currency", "volume", "req_timestamp"]]
+
+    return coinone_df

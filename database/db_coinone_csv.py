@@ -9,7 +9,7 @@ from datetime import datetime
 import os
 
 # Setting Filename : Filepath & timestamp
-filedir = "\Users\User\Desktop\Coinprice DB"
+filedir = "\Users\User\Desktop\Sunwooang\Coinprice_DB"
 current_time = datetime.now()
 file_timestamp = current_time.strftime('%Y%m%d%H%M%S')
 filepath_full = os.path.join(filedir, "Coinone_" + file_timestamp + ".csv")

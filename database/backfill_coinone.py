@@ -9,7 +9,7 @@ import glob
 
 def merge_json():
     # Setting Filename : Filepath & timestamp
-    filedir = "\Users\User\Desktop\Coinprice DB"
+    filedir = "\Users\User\Desktop\Sunwooang\Coinprice_DB"
 
     # Fetch all json filepath strings
     subfolder_list = os.listdir(filedir)

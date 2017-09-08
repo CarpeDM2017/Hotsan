@@ -7,7 +7,7 @@ import pandas as pd
 import os
 import glob
 
-def backfill():
+def merge_json():
     # Setting Filename : Filepath & timestamp
     filedir = "\Users\User\Desktop\Coinprice DB"
 
@@ -26,6 +26,3 @@ def backfill():
         coinone_df = pd.concat(df_list)
         export_filename = os.path.join(filepath, subfolder + ".csv")
         coinone_df.to_csv(path_or_buf = export_filename, index = False)
-
-def dedupe_backfill():
-    pass

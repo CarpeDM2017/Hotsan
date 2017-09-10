@@ -47,3 +47,12 @@ def table_from_query(query_string, dataset="transaction_log", table_name="transa
     query_job.begin()
     # Wait for job to complete.
     query_job.result()
+
+def delete_table(table_name="", dataset_name=""):
+    bq_client = bigquery.Client(project = "virtual-bonito-179210")
+    dataset = bq_client.dataset(dataset_name)
+    table = dataset.table(table_name)
+
+    assert table.exists()
+    table.delete()
+    assert not table.exists()

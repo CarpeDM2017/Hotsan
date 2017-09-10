@@ -4,11 +4,11 @@
 :: Wait for 15 seconds before starting.
 timeout 15
 :: Fetch Daily Database (23:55)
-python \Users\User\Desktop\sunwooang\Hotsan\database\db_coinone_csv.py daily
+python \Users\User\Desktop\CarpeDM2017\Hotsan\database\db_coinone_csv.py daily
 :: wait for 10 more minutes
 timeout 600
 :: Fetch supplementary Database. (Around 00:05)
-python \Users\User\Desktop\sunwooang\Hotsan\database\db_coinone_csv.py hourly
+python \Users\User\Desktop\CarpeDM2017\Hotsan\database\db_coinone_csv.py hourly
 
 timeout 150
 
@@ -18,9 +18,9 @@ SETLOCAL EnableDelayedExpansion
 :: set variables
 set /a counter=1
 set "tablename=virtual-bonito-179210:transaction_log."
-set "pathname=C:\Users\User\Desktop\Sunwooang\Coinprice_DB\"
-set "targetdir=C:\Users\User\Desktop\Sunwooang\Storage\"
-cd C:\Users\User\Desktop\Sunwooang\Coinprice_DB\
+set "pathname=C:\Users\User\Desktop\CarpeDM2017\Coinprice_DB\"
+set "targetdir=C:\Users\User\Desktop\CarpeDM2017\Storage\"
+cd C:\Users\User\Desktop\CarpeDM2017\Coinprice_DB\
 
 :: Upload Each file in DB directory to BQ dataset as tmp1, tmp2....
 for /f %%f in ('dir /b') do (
@@ -31,7 +31,7 @@ for /f %%f in ('dir /b') do (
 )
 
 :: Process today's db
-python C:\Users\User\Desktop\Sunwooang\Hotsan\database\bq_daily_table_process.py
+python C:\Users\User\Desktop\CarpeDM2017\Hotsan\database\bq_daily_table_process.py
 
 :: Move used files to Storage
 call move %pathname%*.csv %targetdir%

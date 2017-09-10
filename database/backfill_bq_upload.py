@@ -7,7 +7,7 @@ import os
 import glob
 
 # Get all files in specified Directory
-filedir = "\Users\User\Desktop\Sunwooang\Coinprice_DB"
+filedir = "\Users\User\Desktop\CarpeDM2017\Coinprice_DB"
 csvlist = glob.glob(filedir + "\*.csv")
 dataset = "transaction_log"
 

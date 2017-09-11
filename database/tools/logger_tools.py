@@ -1,6 +1,7 @@
 import logging
 import logging.handlers
 import os
+import sys
 from datetime import datetime
 
 def init_logger(filename="", add_timestamp=True):
@@ -14,12 +15,16 @@ def init_logger(filename="", add_timestamp=True):
     logger.setLevel(logging.DEBUG)
     fh = logging.FileHandler((os.path.join('\Users\User\Desktop\CarpeDM2017\Logs', filename+file_timestamp+'.log')))
     sh = logging.StreamHandler()
-
-    logger.addHandler(fh)
-    logger.addHandler(sh)
+    er = logging.StreamHandler(sys.stderr)
 
     formatter = logging.Formatter(fmt ='%(asctime)s - %(levelname)s - %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
     fh.setFormatter(formatter)
     sh.setFormatter(formatter)
+    er.setFormatter(formatter)
+    er.setLevel(logging.WARNING)
+
+    logger.addHandler(fh)
+    logger.addHandler(sh)
+    logger.addHandler(er)
 
     return logger

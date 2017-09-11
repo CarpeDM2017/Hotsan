@@ -141,9 +141,9 @@ def get_transaction_log(parsed_payload):
     :param parsed_payload: Individual formatted payload in json format
     :return: dataframe format of response
     """
-    Hotsan = coinone.HotSanCoinone(url="trades/", payload=parsed_payload)
+    Hotsan = HotSanCoinone(url="trades/", payload=parsed_payload)
     response = Hotsan.get_response(is_public=True)
-    record_df = coinone.json_to_df(response)
+    record_df = json_to_df(response)
 
     return record_df
 
@@ -153,3 +153,14 @@ def is_connected():
     _, response = Hotsan.get_response(is_public=True, return_response=True)
     # Status 200 is normal. Result will return true if accessible to coinone server
     return "200" == response["status"]
+
+def check_connection(trial=5):
+    # Check for internet connection, and proceed if internet is okay. Try 5 Times
+    for i in range(trial):
+        if is_connected():
+            break
+        elif i < trial-1:
+            time.sleep(10)
+        else :
+            print "Internet is not connected, please try again"
+            exit()

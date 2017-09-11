@@ -9,16 +9,6 @@ import glob
 import shutil
 
 def get_data(payload, file_destination = ""):
-    # Check for internet connection, and proceed if internet is okay. Try 5 Times
-    for i in range(5):
-        if coinone.is_connected():
-            break
-        elif i < 4:
-            time.sleep(10)
-        else :
-            print "Internet is not connected, please try again"
-            exit()
-
     # Set Filepath and payloads.
     payload_list = coinone.payload_parse(payload)
 
@@ -28,12 +18,14 @@ def get_data(payload, file_destination = ""):
     # Will fetch specified records from server.
     for parsed_payload in payload_list:
         log_df = coinone.get_transaction_log(parsed_payload)
-        df_list.list.append(log_df)
+        df_list.append(log_df)
 
     # Merge dataframes of all coins
     coinone_df = pd.concat(df_list)
     formatters.csv_with_timestamp(coinone_df,export_dir=file_destination, filename="Coinone")
 
+# First, Check whether coinone server is accessible
+coinone.check_connection()
 
 # Preset Payloads, Variables
 csv_destination = "\Users\User\Desktop\CarpeDM2017\Coinprice_DB"
@@ -52,17 +44,18 @@ time.sleep(150)
 
 # Get Schema of base table
 table_schema = bq_tools.get_bq_schema()
-
 # Get all files in specified Directory
 csvlist = glob.glob(csv_destination + "\*.csv")
 dataset = "transaction_log"
 
+filenum = 1
 for csv in csvlist:
     with open(csv, 'rb') as fileobj:
         # Files should be in binary format for google api
         # Extract only filename from filepath
         filename = os.path.splitext(os.path.split(csv)[-1])[0]
-        bq_tools.gcloud_upload(fileobj, table_name = filename, input_schema=table_schema)
+        bq_tools.gcloud_upload(fileobj, table_name = "temp"+str(filenum), input_schema=table_schema)
+        filenum += 1
 
 # Process today's DB, includes Deduping Process
 # Get both dates
@@ -86,6 +79,6 @@ for file in csvlist:
     shutil.move(file, csv_storage_path)
 
 # Remove temporary bigquery tables after process
-bq_tools.delete_table(table_name = "temp1",dataset_name="transaction_log")
-bq_tools.delete_table(table_name = "temp2",dataset_name="transaction_log")
-
+for csv in csvlist:
+    bq_tools.delete_table(table_name = "temp"+str(filenum),dataset_name="transaction_log")
+    filenum -= 1

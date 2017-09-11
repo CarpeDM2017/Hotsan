@@ -2,7 +2,7 @@
 WITH
   max_timestamp AS(
   SELECT
-    MAX(timestamp)
+    MAX(timestamp) as timestamp
   FROM
     `transaction_log.transaction*`
   WHERE

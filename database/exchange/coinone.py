@@ -14,6 +14,7 @@ import urllib
 import time
 import pandas as pd
 import simplejson as json
+import itertools as it
 
 class HotSanCoinone:
     def __init__(self, access_token = "", secret_key= "", url= "", payload=None,
@@ -30,7 +31,7 @@ class HotSanCoinone:
         URL = string
         (ex) 'https://api.coinone.co.kr/v2/account/daily_balance/'
 
-        PAYLOAD = Json string.
+        PAYLOAD = format dict
         (ex)
         {
             "access_token": ACCESS_TOKEN,
@@ -51,7 +52,7 @@ class HotSanCoinone:
         self.encoded_payload = base64.b64encode(dumped_json)
         self.signature = hmac.new(str(self.secret_key).upper(), str(self.encoded_payload), hashlib.sha512)
 
-    def get_response(self, is_public = False):
+    def get_response(self, is_public = False, return_response = False):
         """Send Payload to URL and Receive response from server
         If it is public request, only send Request URL
         Private Requests must include secret key and access token"""
@@ -64,11 +65,15 @@ class HotSanCoinone:
                 'X-COINONE-SIGNATURE': self.signature
             }
             response, content = http.request(self.url, 'POST', headers=headers, body=self.encoded_payload)
-            return content
 
         else : # Public Requests does not require encoding
             formatted_url = urllib.urlencode(self.payload)
             response, content = http.request(self.url+'?'+formatted_url, 'GET')
+
+        if return_response:
+            return content, response
+
+        else :
             return content
 
 def json_to_df(json_string):
@@ -106,36 +111,56 @@ def json_to_df(json_string):
 
     return coinone_df
 
-def csv_dedupe():
-    #todo : merge csv files into daily tables, without duplication
+def payload_parse(payload_dict):
+    """Generate combination of payloads generated from input dict
+    Returns List of Payloads(Dict).
+
+    Example :
+    input =
+    {"currency": ["btc", "bch", "eth"], "period": ["hour", "day"]}
+    output =
+    [{"currency" : "btc", "period" : "hour"},
+    {"currency" : "btc", "period" : "day"},
+    {"currency" : "bch", "period" : "hour"},
+    ....
+    {"currency" : "eth", "period" : "day"}]
     """
-    1.read csv file into dataframe
-    2.leave data within specified date
-    3.from daily transaction log, trim certain time
-    4.from hourly transaction log, trim certain time
-    5.merge both files
-    6.save as csv
+
+    try :
+        payload_keys = [key for key in payload_dict]
+        value_combinations = it.product(*(payload_dict[payload_key] for payload_key in payload_keys))
+        payload_combinations = [dict(zip(payload_keys, comb)) for comb in value_combinations]
+
+        return payload_combinations
+
+    except :
+        print "Please check whether input data is in correct format"
+
+def get_transaction_log(parsed_payload):
     """
-    # df_tmp = pd.read_csv(filepath)
-    # maxval = df_tmp["timestamp"].max()
-    pass
+    :param parsed_payload: Individual formatted payload in json format
+    :return: dataframe format of response
+    """
+    Hotsan = HotSanCoinone(url="trades/", payload=parsed_payload)
+    response = Hotsan.get_response(is_public=True)
+    record_df = json_to_df(response)
 
-def csv_backfill(filepath):
-    # todo : to be deprecated
-    # Open json file
-    json_dict = json.load(filepath)
-    # Read Main Content of JSON string, and Cast data type to numeric values.(Original type : string)
-    content_list = json_dict["completeOrders"]
-    coinone_df = pd.DataFrame(content_list).apply(pd.to_numeric)
+    return record_df
 
-    # Add Coin Type, Currency, exchange, timestamp of request. Rename QTY
-    coinone_df["coin"] = json_dict["currency"]
-    coinone_df["req_timestamp"] = json_dict["timestamp"]
-    coinone_df["currency"] = "KRW"
-    coinone_df["exchange"] = "coinone"
-    coinone_df.rename(columns = {'qty':'volume'}, inplace = True)
+def is_connected():
+    """Check if pc is accessible to coinone server."""
+    Hotsan = HotSanCoinone(url="ticker/", payload= {"currency": "btc"})
+    _, response = Hotsan.get_response(is_public=True, return_response=True)
+    # Status 200 is normal. Result will return true if accessible to coinone server
+    return "200" == response["status"]
 
-    # Order columns
-    coinone_df = coinone_df[["timestamp", "exchange", "coin", "price", "currency", "volume", "req_timestamp"]]
-
-    return coinone_df
+def check_connection(trial=5):
+    # Check for internet connection, and proceed if internet is okay. Try 5 Times
+    for i in range(trial):
+        if is_connected():
+            break
+        elif i < trial-1:
+            time.sleep(10)
+        else :
+            print "Internet is not connected, please try again"
+            exit()

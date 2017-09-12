@@ -77,12 +77,12 @@ if __name__ == "__main__":
         yesterday = yesterday.strftime("%Y%m%d")
 
         # Run Yesterday's Query First, this should be placed first
-        with open("sql_script\dedupe_yesterday.sql", 'r') as file:
+        with open("\Users\User\Desktop\CarpeDM2017\Hotsan\database\sql_script\dedupe_yesterday.sql", 'r') as file:
             bq_tools.table_from_query(file.read(), date_str=yesterday)
         logger.info("Deduping Process for Yesterday's DB finished")
 
         # Run today's Query
-        with open("sql_script\dedupe.sql", 'r') as file:
+        with open("\Users\User\Desktop\CarpeDM2017\Hotsan\database\sql_script\dedupe.sql", 'r') as file:
             bq_tools.table_from_query(file.read(), write_option="WRITE_TRUNCATE", date_str=today)
         logger.info("Finished formatting Today's DB finished")
         logger.info("Querying Finished")

@@ -67,6 +67,7 @@ if __name__ == "__main__":
                 filenum += 1
 
         logger.info("Uploaded CSV to Bigquery")
+        time.sleep(60)
 
         # Process today's DB, includes Deduping Process
         # Get both dates, and format in string

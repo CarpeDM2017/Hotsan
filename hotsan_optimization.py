@@ -65,7 +65,7 @@ def main():
     print("Bayesian optimization for HotSan v" + version)
     print("")
     gp_params = {'alpha' : 1e-5}
-    params = {'window' : (1, 60), 'window_std' : (1, 60), 'n_batch' : (10, 100), 'n_model' : (1,5), 'n_dense1' : (0,10), 'n_dense2' : (0,10), 'n_gru' : (0,5), 'verbose' : (verbose,verbose) }
+    params = {'window' : (1, 60), 'window_std' : (1, 60), 'n_batch' : (10, 100), 'n_model' : (1,5), 'n_dense1' : (0,10), 'n_dense2' : (0,10), 'n_gru' : (0,5) }
     bayes = BayesianOptimization(hotsan, params, verbose=1-verbose)
     bayes.maximize(init_points=1, n_iter=n_bayes, **gp_params)
     print("")
@@ -171,7 +171,7 @@ def read_data(window, window_std, n_batch) :
     return (trainX, trainY), (testX, testY)
 
 
-def hotsan(window, window_std, n_batch, n_model, n_dense1, n_dense2, n_gru, verbose) :
+def hotsan(window, window_std, n_batch, n_model, n_dense1, n_dense2, n_gru) :
     """
     DNN with Dense layers and GRU
     Dense -> Hard_sigmoid -> GRU -> Dense -> Linear

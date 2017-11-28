@@ -1,3 +1,6 @@
+#! usr/bin/env python2
+# -*- coding: utf-8 -*-
+
 import simplejson as json
 import os
 import pandas as pd
@@ -20,7 +23,7 @@ def json_to_file(json_object, filename="Dataset", filepath_dir = "", add_timesta
     fd.write(json.dumps(parsed, indent=4))
     fd.close()
 
-def csv_with_timestamp(df, export_dir = "\Users\User\Desktop", filename="Data", log_time=True, include_index=False):
+def csv_with_timestamp(df, export_dir = os.path.join(os.path.expanduser("~")), filename="Data", log_time=True, include_index=False):
     """
     :param df: Dataframe to convert to csv file
     :param log_time: to log time on export filename or not

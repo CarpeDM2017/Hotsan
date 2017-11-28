@@ -1,4 +1,6 @@
-# Coded in Python 2.7
+#! /usr/bin/env python2
+# -*- coding: utf-8 -*-
+
 """
 Basic Tools to communicate with Coinone Server. Based on V2 API
 Refer to Coinone API Documentation for more info :
@@ -16,9 +18,10 @@ import pandas as pd
 import simplejson as json
 import itertools as it
 
+
 class HotSanCoinone:
-    def __init__(self, access_token = "", secret_key= "", url= "", payload=None,
-                 encoded_payload=None, signature= None):
+    def __init__(self, access_token="", secret_key="", url="", payload=None,
+                 encoded_payload=None, signature=None):
         """For public Requests, access tokens and secret keys are not required
         encoded payload and signature can ba added by get_encoded_payload() method
         and get_signature() method, which is only necessary for private requests
@@ -149,7 +152,7 @@ def get_transaction_log(parsed_payload):
 
 def is_connected():
     """Check if pc is accessible to coinone server."""
-    Hotsan = HotSanCoinone(url="ticker/", payload= {"currency": "btc"})
+    Hotsan = HotSanCoinone(url="ticker/", payload={"currency": "btc"})
     _, response = Hotsan.get_response(is_public=True, return_response=True)
     # Status 200 is normal. Result will return true if accessible to coinone server
     return "200" == response["status"]

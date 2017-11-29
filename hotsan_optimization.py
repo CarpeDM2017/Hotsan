@@ -1,3 +1,5 @@
+#! hotsan2.7/bin/activate
+
 """
 Bayesian optimization of the hyperparameters of HotSan,
 the algorithm for automated trading of cryptocurrencies.

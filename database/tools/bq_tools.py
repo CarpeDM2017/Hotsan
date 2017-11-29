@@ -1,3 +1,6 @@
+#! /usr/bin/env python2
+
+
 """Bigquery API functions, refer to github wiki for more info"""
 from google.cloud import bigquery
 import uuid

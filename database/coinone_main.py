@@ -1,4 +1,4 @@
-#! usr/bin/env python2
+#! /usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 import os
@@ -88,11 +88,11 @@ if __name__ == "__main__":
 
         # Process TODAY's DB, includes Deduping Process
         # Get both dates, and format in string
-        TODAY = datetime.utcnow()
-        YESTERDAY = TODAY + timedelta(days=-1)
+        TODAY_UNIX = datetime.utcnow()
+        YESTERDAY_UNIX = TODAY_UNIX + timedelta(days=-1)
 
-        TODAY = TODAY.strftime("%Y%m%d")
-        YESTERDAY = YESTERDAY.strftime("%Y%m%d")
+        TODAY = TODAY_UNIX.strftime("%Y%m%d")
+        YESTERDAY = YESTERDAY_UNIX.strftime("%Y%m%d")
 
         # Run YESTERDAY's Query First, this should be placed first
         with open(os.path.join(os.path.dirname(__file__), "sql_script", "dedupe_YESTERDAY.sql"), 'r') as file:

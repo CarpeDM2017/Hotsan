@@ -1,3 +1,6 @@
+#! /usr/bin/env python2
+# -*- coding: utf-8 -*-
+
 import logging
 import logging.handlers
 import os
@@ -13,7 +16,7 @@ def init_logger(filename="", add_timestamp=True):
 
     logger = logging.getLogger("Hotsan_diary")
     logger.setLevel(logging.DEBUG)
-    fh = logging.FileHandler((os.path.join('\Users\User\Desktop\CarpeDM2017\Logs', filename+file_timestamp+'.log')))
+    fh = logging.FileHandler((os.path.join(os.path.expanduser("~"), 'Desktop','CarpeDM2017', 'Logs', filename+file_timestamp+'.log')))
     sh = logging.StreamHandler()
     er = logging.StreamHandler(sys.stderr)
 

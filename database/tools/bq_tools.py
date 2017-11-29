@@ -1,4 +1,4 @@
-#! /usr/bin/env python2
+#! hotsan2.7/bin/python2
 
 
 """Bigquery API functions, refer to github wiki for more info"""

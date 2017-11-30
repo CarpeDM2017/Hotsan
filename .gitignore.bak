@@ -1,0 +1,13 @@
+# Ignore all files in Intelij Configuration Folder
+.idea/
+
+# Ignore all python cache files
+*.pyc
+*.pyo
+
+# ignore cache directories
+__pycache__/
+.cache/
+
+# ignore jupyter checkpoints
+.ipynb_checkpoints/

@@ -16,9 +16,9 @@ dependency_links = [
         ]
 
 setup(name='Hotsan',
-      version='0,1',
+      version='0,0.1',
       description='Hotsan',
-      author='Carpe_DM',
+      author='CarpeDM',
       author_email=None,
       packages=find_packages(),
       install_requires=install_requires,

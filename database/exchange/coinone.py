@@ -1,4 +1,3 @@
-#! hotsan2.7/bin/python2
 # -*- coding: utf-8 -*-
 
 """

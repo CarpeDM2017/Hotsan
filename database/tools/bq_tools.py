@@ -1,4 +1,5 @@
-#! hotsan2.7/bin/python2
+# -*- coding: utf-8 -*-
+
 
 
 """Bigquery API functions, refer to github wiki for more info"""
